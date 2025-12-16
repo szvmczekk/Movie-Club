@@ -258,6 +258,11 @@ textarea {
     padding: 8px 0;
 }
 
+.mc-form-message {
+    color: #ffc107;
+    text-align: center;
+}
+
 .footer {
     padding: 8px;
     text-align: center;
