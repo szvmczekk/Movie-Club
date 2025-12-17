@@ -93,6 +93,11 @@ a {
     padding: 16px;
 }
 
+.movie-list-item-poster {
+    display: block;
+    max-width: 200px;
+}
+
 .movie-list-item-content > * {
     margin: 8px 0;
 }
@@ -261,6 +266,11 @@ textarea {
 .mc-form-message {
     color: #ffc107;
     text-align: center;
+}
+
+.registration-link {
+    text-align: center;
+    margin-top: 32px;
 }
 
 .footer {

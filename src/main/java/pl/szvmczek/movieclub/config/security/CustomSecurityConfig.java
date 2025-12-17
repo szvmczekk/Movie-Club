@@ -3,10 +3,10 @@ package pl.szvmczek.movieclub.config.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
@@ -19,6 +19,7 @@ public class CustomSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/ocen-film").authenticated()
                         .requestMatchers("/admin/**").hasAnyRole(EDITOR_ROLE,ADMIN_ROLE)
                         .anyRequest().permitAll()
                 )
@@ -30,6 +31,8 @@ public class CustomSecurityConfig {
                         .logoutRequestMatcher(PathPatternRequestMatcher.pathPattern(HttpMethod.GET,"/logout"))
                         .logoutSuccessUrl("/login?logout")
                 );
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
+        http.headers(header -> header.frameOptions(frame -> frame.sameOrigin()));
         return http.build();
     }
 
@@ -40,5 +43,10 @@ public class CustomSecurityConfig {
                 "/scripts/**",
                 "/styles/**"
         );
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

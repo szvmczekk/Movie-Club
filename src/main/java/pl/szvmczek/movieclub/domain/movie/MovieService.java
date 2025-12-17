@@ -1,5 +1,6 @@
 package pl.szvmczek.movieclub.domain.movie;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.szvmczek.movieclub.domain.genre.Genre;
 import pl.szvmczek.movieclub.domain.genre.GenreRepository;
@@ -56,5 +57,12 @@ public class MovieService {
             movie.setPoster(savedFileName);
         }
         movieRepository.save(movie);
+    }
+
+    public List<MovieDto> findAllMovies(int size){
+        Pageable page = Pageable.ofSize(size);
+        return movieRepository.findTopByRating(page).stream()
+                .map(MovieDtoMapper::map)
+                .toList();
     }
 }
